@@ -309,20 +309,3 @@ function limparFormulario() {
   // 🔥 ESSENCIAL: remove qualquer rascunho ativo
   localStorage.removeItem('rascunhoDia');
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

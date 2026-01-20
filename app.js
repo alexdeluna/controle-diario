@@ -39,18 +39,36 @@ function calcular() {
     document.getElementById('kmPercorrido').value = kmF - kmI;
   }
 
+  // ====== HORAS TRABALHADAS ======
+  const hInicio = document.getElementById('horaInicio').value;
+  const hFim = document.getElementById('horaFim').value;
+
   let horas = 0;
-  if (horaInicioReal && horaFimReal) {
-    horas = (horaFimReal - horaInicioReal) / 3600000;
-    if (horas < 0) horas += 24;
+
+  if (hInicio && hFim) {
+    const hoje = new Date();
+    let inicio = horaInicioReal ?? new Date(`${hoje.toISOString().split('T')[0]}T${hInicio}`);
+    let fim = horaFimReal ?? new Date(`${hoje.toISOString().split('T')[0]}T${hFim}`);
+
+    // Se passou da meia-noite
+    if (fim < inicio) {
+      fim.setDate(fim.getDate() + 1);
+    }
+
+    horas = (fim - inicio) / 3600000;
+
     document.getElementById('horasTrabalhadas').value = horas.toFixed(2);
   }
 
+  // ====== VALOR DA HORA ======
   const apurado = Number(document.getElementById('apurado').value || 0);
   if (horas > 0) {
     document.getElementById('valorHora').value = (apurado / horas).toFixed(2);
+  } else {
+    document.getElementById('valorHora').value = '';
   }
 
+  // ====== LUCRO ======
   const lucro = apurado - totalAbastecido - totalCusto;
   document.getElementById('lucro').value = lucro.toFixed(2);
 }
@@ -78,3 +96,4 @@ function salvarDia() {
   localStorage.setItem('controleDiario', JSON.stringify(dados));
   alert("Dia salvo com sucesso!");
 }
+

@@ -128,13 +128,25 @@ function salvarDia() {
   if (!dados[data]) dados[data] = [];
 
   dados[data].push({
-    km: Number(kmPercorrido.value),
-    horas: Number(horasTrabalhadas.value),
-    valorHora: Number(valorHora.value),
-    apurado: Number(apurado.value),
-    custos: totalAbastecido + totalCusto,
-    lucro: Number(lucro.value)
-  });
+    const horasTexto = horasTrabalhadas.value; // ex: "00:58"
+
+const [h, m] = horasTexto.split(':').map(Number);
+const minutosTrabalhados = (h * 60) + m;
+
+dados[data].push({
+  km: Number(kmPercorrido.value),
+
+  // ⏱ profissional
+  horasTexto: horasTexto,
+
+  // 🔢 para cálculos futuros
+  minutos: minutosTrabalhados,
+
+  valorHora: Number(valorHora.value),
+  apurado: Number(apurado.value),
+  custos: totalAbastecido + totalCusto,
+  lucro: Number(lucro.value)
+});
 
   localStorage.setItem('controleDiario', JSON.stringify(dados));
   limparFormulario();
@@ -156,16 +168,29 @@ function limparFormulario() {
 function carregarHistorico() {
   const lista = document.getElementById('listaHistorico');
   lista.innerHTML = '';
+
   const dados = JSON.parse(localStorage.getItem('controleDiario')) || {};
 
-  Object.keys(dados).reverse().forEach(data => {
-    dados[data].forEach((s, i) => {
+  // Datas mais recentes primeiro
+  Object.keys(dados).sort().reverse().forEach(data => {
+
+    // Saídas mais recentes primeiro
+    const saidas = [...dados[data]].reverse();
+
+    saidas.forEach((s, index) => {
+      const numeroSaida = dados[data].length - index;
+
       lista.innerHTML += `
         <div class="dia">
-          <strong>${data} – Saída ${i+1}</strong>
-          KM: ${s.km} | Horas: ${s.horas}
-          <br>Apurado: R$ ${s.apurado}
-          <br>Lucro: R$ ${s.lucro}
+          <strong>${data} – Saída ${numeroSaida}</strong><br>
+
+          🚗 KM: ${s.km}<br>
+          ⏱ Horas trabalhadas: ${s.horasTexto}<br>
+          💰 Valor Hora: R$ ${s.valorHora.toFixed(2)}<br>
+
+          ⛽ Custos: R$ ${s.custos.toFixed(2)}<br>
+          💵 Apurado: R$ ${s.apurado.toFixed(2)}<br>
+          🟢 <strong>Lucro: R$ ${s.lucro.toFixed(2)}</strong>
         </div>
       `;
     });
@@ -192,5 +217,6 @@ window.onload = () => {
   calcular();
   carregarHistorico();
 };
+
 
 

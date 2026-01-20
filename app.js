@@ -156,15 +156,21 @@ function salvarDia() {
   let dados = JSON.parse(localStorage.getItem('controleDiario')) || {};
 
   dados[dataBase] = {
-    kmInicial: Number(document.getElementById('kmInicial').value || 0),
-    kmFinal: Number(document.getElementById('kmFinal').value || 0),
-    horaInicio: inicio.toISOString(),
-    horaFim: fim.toISOString(),
-    apurado: Number(document.getElementById('apurado').value || 0),
-    totalAbastecido,
-    totalCusto,
-    lucro: Number(document.getElementById('lucro').value || 0)
-  };
+    const horasTrabalhadas = Number(document.getElementById('horasTrabalhadas').value || 0);
+const valorHora = Number(document.getElementById('valorHora').value || 0);
+const kmPercorrido = Number(document.getElementById('kmPercorrido').value || 0);
+
+dados[dataBase] = {
+  kmPercorrido,
+  horasTrabalhadas,
+  valorHora,
+  apurado: Number(document.getElementById('apurado').value || 0),
+  totalAbastecido,
+  totalCusto,
+  custoTotal: totalAbastecido + totalCusto,
+  lucro: Number(document.getElementById('lucro').value || 0)
+};
+
 
   localStorage.setItem('controleDiario', JSON.stringify(dados));
  alert("Dia salvo com sucesso!");
@@ -218,9 +224,17 @@ function carregarHistorico() {
 
     div.innerHTML = `
       <strong>${formatarData(data)}</strong>
-      KM: ${d.kmInicial} → ${d.kmFinal}<br>
-      Apurado: R$ ${d.apurado.toFixed(2)}<br>
-      Lucro: <strong>R$ ${d.lucro.toFixed(2)}</strong>
+
+      🚗 KM percorrido: <strong>${d.kmPercorrido} km</strong><br>
+      ⏱ Horas trabalhadas: ${d.horasTrabalhadas.toFixed(2)} h<br>
+      💰 Valor da hora: R$ ${d.valorHora.toFixed(2)}<br>
+
+      ⛽ Combustível: R$ ${d.totalAbastecido.toFixed(2)}<br>
+      📦 Outros custos: R$ ${d.totalCusto.toFixed(2)}<br>
+      🧾 Custo total: <strong>R$ ${d.custoTotal.toFixed(2)}</strong><br>
+
+      💵 Apurado: R$ ${d.apurado.toFixed(2)}<br>
+      🟢 Lucro do dia: <strong>R$ ${d.lucro.toFixed(2)}</strong>
     `;
 
     lista.appendChild(div);
@@ -251,6 +265,7 @@ function limparFormulario() {
   document.getElementById('totalAbastecido').value = '0.00';
   document.getElementById('totalCusto').value = '0.00';
 }
+
 
 
 

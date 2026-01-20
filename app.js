@@ -44,8 +44,17 @@ function calcular() {
     let ini = horaInicioReal || new Date(`${hoje}T${hI}`);
     let fim = horaFimReal || new Date(`${hoje}T${hF}`);
     if (fim < ini) fim.setDate(fim.getDate() + 1);
-    horas = (fim - ini) / 3600000;
-    horasTrabalhadas.value = horas.toFixed(2);
+    const diffMs = fim - ini;
+    const totalMinutos = Math.round(diffMs / 60000);
+
+// Formato visual HH:MM
+const h = Math.floor(totalMinutos / 60);
+const m = totalMinutos % 60;
+horasTrabalhadas.value =
+  `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}`;
+
+// Valor real em horas (somente para cálculo)
+horas = totalMinutos / 60;
   }
 
   const ap = Number(apurado.value || 0);
@@ -183,4 +192,5 @@ window.onload = () => {
   calcular();
   carregarHistorico();
 };
+
 

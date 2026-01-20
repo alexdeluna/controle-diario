@@ -130,6 +130,11 @@ function normalizarHora(valor) {
   return '';
 }
 
+function getValorSeguro(id) {
+  const el = document.getElementById(id);
+  return el ? Number(el.value || 0) : 0;
+}
+
 function salvarDia() {
   const hInicio = document.getElementById('horaInicio').value;
   const hFim = document.getElementById('horaFim').value;
@@ -157,11 +162,12 @@ function salvarDia() {
   }
 
   // Dados da saída
-  const kmPercorrido = Number(document.getElementById('kmPercorrido').value || 0);
-  const horasTrabalhadas = Number(document.getElementById('horasTrabalhadas').value || 0);
-  const valorHora = Number(document.getElementById('valorHora').value || 0);
-  const apurado = Number(document.getElementById('apurado').value || 0);
-  const lucro = Number(document.getElementById('lucro').value || 0);
+  // Dados da saída (leitura segura)
+const kmPercorrido = getValorSeguro('kmPercorrido');
+const horasTrabalhadas = getValorSeguro('horasTrabalhadas');
+const valorHora = getValorSeguro('valorHora');
+const apurado = getValorSeguro('apurado');
+const lucro = getValorSeguro('lucro');
 
   const novaSaida = {
     id: dados[dataBase].saidas.length + 1,
@@ -292,6 +298,7 @@ function limparFormulario() {
   document.getElementById('totalAbastecido').value = '0.00';
   document.getElementById('totalCusto').value = '0.00';
 }
+
 
 
 

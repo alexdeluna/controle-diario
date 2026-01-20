@@ -332,4 +332,13 @@ function limparFormulario() {
   // 🔥 ESSENCIAL: remove qualquer rascunho ativo
   localStorage.removeItem('rascunhoDia');
 }
+function apagarRegistroAtual() {
+  if (!confirm("Deseja apagar os dados atuais em edição?")) return;
+
+  localStorage.removeItem('rascunhoDia');
+  limparFormulario();
+
+  alert("Registro atual apagado.");
+}
+
 

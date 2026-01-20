@@ -73,7 +73,7 @@ button {
 
 <div class="linha">
   <label>KM Inicial</label>
-  <input id="kmInicial" type="number">
+  <input id="kmInicial" type="number" oninput="calcular()">
   <label>KM Final</label>
   <input id="kmFinal" type="number" oninput="calcular()">
 </div>
@@ -82,13 +82,13 @@ button {
   <label>Hora Inicial</label>
   <input id="horaInicio" type="text" inputmode="numeric" placeholder="HHMM"
        style="width:70px"
-       onblur="this.value = normalizarHora(this.value); calcular();">
+       oninput="this.value = normalizarHora(this.value); calcular();">
   <button onclick="capturarHora('horaInicio')">⏱</button>
 
   <label>Hora Final</label>
  <input id="horaFim" type="text" inputmode="numeric" placeholder="HHMM"
        style="width:70px"
-       onblur="this.value = normalizarHora(this.value); calcular();">
+       oninput="this.value = normalizarHora(this.value); calcular();">
   <button onclick="capturarHora('horaFim')">⏱</button>
 </div>
 
@@ -158,13 +158,7 @@ button {
   
 </div>
 
-  <div class="secao">
-  <h3>Histórico Diário</h3>
-  <div id="listaHistorico"></div>
-</div>
-
-
-<script src="app.js"></script>
+ <script src="app.js"></script>
 <script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
@@ -173,6 +167,7 @@ if ('serviceWorker' in navigator) {
 
 </body>
 </html>
+
 
 
 

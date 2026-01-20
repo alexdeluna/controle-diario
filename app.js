@@ -169,7 +169,7 @@ function salvarDia() {
   localStorage.setItem('controleDiario', JSON.stringify(dados));
   alert("Dia salvo com sucesso!");
   localStorage.removeItem('rascunhoDia');
-
+  carregarHistorico();
   
 }
 window.onload = function () {
@@ -191,7 +191,47 @@ window.onload = function () {
   document.getElementById('totalCusto').value = totalCusto.toFixed(2);
 
   calcular();
+  carregarHistorico();
+
 };
+
+function carregarHistorico() {
+  const lista = document.getElementById('listaHistorico');
+  if (!lista) return;
+
+  const dados = JSON.parse(localStorage.getItem('controleDiario')) || {};
+  const datas = Object.keys(dados).sort().reverse();
+
+  lista.innerHTML = '';
+
+  if (datas.length === 0) {
+    lista.innerHTML = '<em>Nenhum dia salvo ainda.</em>';
+    return;
+  }
+
+  datas.forEach(data => {
+    const d = dados[data];
+
+    const div = document.createElement('div');
+    div.className = 'dia';
+
+    div.innerHTML = `
+      <strong>${formatarData(data)}</strong>
+      KM: ${d.kmInicial} → ${d.kmFinal}<br>
+      Apurado: R$ ${d.apurado.toFixed(2)}<br>
+      Lucro: <strong>R$ ${d.lucro.toFixed(2)}</strong>
+    `;
+
+    lista.appendChild(div);
+  });
+}
+
+function formatarData(dataISO) {
+  const [y, m, d] = dataISO.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+
 
 
 

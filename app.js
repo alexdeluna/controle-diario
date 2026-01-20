@@ -1,4 +1,4 @@
-let totalAbastecido = 0;
+á a função limparformula´riolet totalAbastecido = 0;
 let totalCusto = 0;
 let horaInicioReal = null;
 let horaFimReal = null;
@@ -279,25 +279,37 @@ function formatarData(dataISO) {
   return `${d}/${m}/${y}`;
 }
 function limparFormulario() {
+  // Limpa todos os inputs editáveis
   document.querySelectorAll('input').forEach(input => {
     if (!input.classList.contains('readonly')) {
       input.value = '';
     }
   });
 
-  document.getElementById('kmPercorrido').value = '';
-  document.getElementById('horasTrabalhadas').value = '';
-  document.getElementById('valorHora').value = '';
-  document.getElementById('lucro').value = '';
+  // Limpa campos calculados (proteção contra null)
+  ['kmPercorrido', 'horasTrabalhadas', 'valorHora', 'lucro']
+    .forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
 
+  // Zera variáveis internas
   totalAbastecido = 0;
   totalCusto = 0;
   horaInicioReal = null;
   horaFimReal = null;
 
-  document.getElementById('totalAbastecido').value = '0.00';
-  document.getElementById('totalCusto').value = '0.00';
+  // Reseta totais visuais
+  const ab = document.getElementById('totalAbastecido');
+  const cu = document.getElementById('totalCusto');
+
+  if (ab) ab.value = '0.00';
+  if (cu) cu.value = '0.00';
+
+  // 🔥 ESSENCIAL: remove qualquer rascunho ativo
+  localStorage.removeItem('rascunhoDia');
 }
+
 
 
 

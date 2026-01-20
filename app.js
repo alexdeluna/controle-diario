@@ -16,6 +16,7 @@ function capturarHora(campo) {
   }
 
   input.value = `${hora}:${minutos}`;
+  input.dispatchEvent(new Event('input'));
 
   if (campo === 'horaInicio') {
     horaInicioReal = new Date();
@@ -120,6 +121,7 @@ function salvarDia() {
   localStorage.setItem('controleDiario', JSON.stringify(dados));
   alert("Dia salvo com sucesso!");
 }
+
 
 
 

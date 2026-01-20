@@ -57,11 +57,13 @@ button {
 
 <div class="linha">
   <label>Hora Inicial</label>
-  <input id="horaInicio" type="text" inputmode="numeric" placeholder="HH:MM">
+  <input id="horaInicio" type="text" inputmode="numeric" placeholder="HHMM"
+       onblur="this.value = normalizarHora(this.value); calcular();">
   <button onclick="capturarHora('horaInicio')">⏱</button>
 
   <label>Hora Final</label>
-  <input id="horaFim" type="text" inputmode="numeric" placeholder="HH:MM">
+  <input id="horaFim" type="text" inputmode="numeric" placeholder="HHMM"
+       onblur="this.value = normalizarHora(this.value); calcular();">
   <button onclick="capturarHora('horaFim')">⏱</button>
 </div>
 
@@ -131,6 +133,7 @@ if ('serviceWorker' in navigator) {
 
 </body>
 </html>
+
 
 
 

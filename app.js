@@ -84,6 +84,31 @@ function calcular() {
   document.getElementById('lucro').value = lucro.toFixed(2);
 }
 
+function normalizarHora(valor) {
+  if (!valor) return '';
+
+  // Remove tudo que não for número
+  const numeros = valor.replace(/\D/g, '');
+
+  if (numeros.length === 1) {
+    return `0${numeros}:00`;
+  }
+
+  if (numeros.length === 2) {
+    return `${numeros}:00`;
+  }
+
+  if (numeros.length === 3) {
+    return `0${numeros[0]}:${numeros.slice(1,3)}`;
+  }
+
+  if (numeros.length >= 4) {
+    return `${numeros.slice(0,2)}:${numeros.slice(2,4)}`;
+  }
+
+  return '';
+}
+
 function salvarDia() {
   const hInicio = document.getElementById('horaInicio').value;
   const hFim = document.getElementById('horaFim').value;
@@ -121,6 +146,7 @@ function salvarDia() {
   localStorage.setItem('controleDiario', JSON.stringify(dados));
   alert("Dia salvo com sucesso!");
 }
+
 
 
 

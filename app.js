@@ -27,6 +27,22 @@ function capturarHora(campo) {
   calcular();
 }
 
+function salvarRascunho() {
+  const rascunho = {
+    kmInicial: document.getElementById('kmInicial').value,
+    kmFinal: document.getElementById('kmFinal').value,
+    horaInicio: document.getElementById('horaInicio').value,
+    horaFim: document.getElementById('horaFim').value,
+    apurado: document.getElementById('apurado').value,
+    totalAbastecido,
+    totalCusto,
+    horaInicioReal,
+    horaFimReal
+  };
+
+  localStorage.setItem('rascunhoDia', JSON.stringify(rascunho));
+}
+
 function addAbastecimento() {
   const v = Number(document.getElementById('abastecimento').value || 0);
   totalAbastecido += v;
@@ -86,6 +102,7 @@ document.getElementById('horaFim').value = hFim;
   // ====== LUCRO ======
   const lucro = apurado - totalAbastecido - totalCusto;
   document.getElementById('lucro').value = lucro.toFixed(2);
+  salvarRascunho();
 }
 
 function normalizarHora(valor) {
@@ -112,6 +129,8 @@ function normalizarHora(valor) {
 
   return '';
 }
+
+
 
 function salvarDia() {
   const hInicio = document.getElementById('horaInicio').value;
@@ -149,7 +168,32 @@ function salvarDia() {
 
   localStorage.setItem('controleDiario', JSON.stringify(dados));
   alert("Dia salvo com sucesso!");
+  localStorage.removeItem('rascunhoDia');
+
+  
 }
+window.onload = function () {
+  const rascunho = JSON.parse(localStorage.getItem('rascunhoDia'));
+  if (!rascunho) return;
+
+  document.getElementById('kmInicial').value = rascunho.kmInicial || '';
+  document.getElementById('kmFinal').value = rascunho.kmFinal || '';
+  document.getElementById('horaInicio').value = rascunho.horaInicio || '';
+  document.getElementById('horaFim').value = rascunho.horaFim || '';
+  document.getElementById('apurado').value = rascunho.apurado || '';
+
+  totalAbastecido = rascunho.totalAbastecido || 0;
+  totalCusto = rascunho.totalCusto || 0;
+  horaInicioReal = rascunho.horaInicioReal ? new Date(rascunho.horaInicioReal) : null;
+  horaFimReal = rascunho.horaFimReal ? new Date(rascunho.horaFimReal) : null;
+
+  document.getElementById('totalAbastecido').value = totalAbastecido.toFixed(2);
+  document.getElementById('totalCusto').value = totalCusto.toFixed(2);
+
+  calcular();
+};
+
+
 
 
 

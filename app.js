@@ -74,23 +74,37 @@ function calcular() {
 }
 
 function salvarDia() {
-  if (!horaInicioReal || !horaFimReal) {
-    alert("Capture a hora inicial e final.");
+  const hInicio = document.getElementById('horaInicio').value;
+  const hFim = document.getElementById('horaFim').value;
+
+  if (!hInicio || !hFim) {
+    alert("Preencha a hora inicial e final.");
     return;
   }
 
-  const dataBase = horaInicioReal.toISOString().split('T')[0];
+  const hoje = new Date();
+  const dataBase = hoje.toISOString().split('T')[0];
+
+  // Usa hora capturada OU cria a partir da digitada
+  let inicio = horaInicioReal ?? new Date(`${dataBase}T${hInicio}`);
+  let fim = horaFimReal ?? new Date(`${dataBase}T${hFim}`);
+
+  // Trata virada após meia-noite
+  if (fim < inicio) {
+    fim.setDate(fim.getDate() + 1);
+  }
+
   let dados = JSON.parse(localStorage.getItem('controleDiario')) || {};
 
   dados[dataBase] = {
-    kmInicial: Number(document.getElementById('kmInicial').value),
-    kmFinal: Number(document.getElementById('kmFinal').value),
-    horaInicio: horaInicioReal,
-    horaFim: horaFimReal,
-    apurado: Number(document.getElementById('apurado').value),
+    kmInicial: Number(document.getElementById('kmInicial').value || 0),
+    kmFinal: Number(document.getElementById('kmFinal').value || 0),
+    horaInicio: inicio.toISOString(),
+    horaFim: fim.toISOString(),
+    apurado: Number(document.getElementById('apurado').value || 0),
     totalAbastecido,
     totalCusto,
-    lucro: Number(document.getElementById('lucro').value)
+    lucro: Number(document.getElementById('lucro').value || 0)
   };
 
   localStorage.setItem('controleDiario', JSON.stringify(dados));

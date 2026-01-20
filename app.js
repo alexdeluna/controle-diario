@@ -51,8 +51,12 @@ function calcular() {
   }
 
   // ====== HORAS TRABALHADAS ======
-  const hInicio = document.getElementById('horaInicio').value;
-  const hFim = document.getElementById('horaFim').value;
+  const hInicio = normalizarHora(document.getElementById('horaInicio').value);
+const hFim = normalizarHora(document.getElementById('horaFim').value);
+
+document.getElementById('horaInicio').value = hInicio;
+document.getElementById('horaFim').value = hFim;
+
 
   let horas = 0;
 
@@ -146,6 +150,7 @@ function salvarDia() {
   localStorage.setItem('controleDiario', JSON.stringify(dados));
   alert("Dia salvo com sucesso!");
 }
+
 
 
 

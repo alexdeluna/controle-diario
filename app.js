@@ -9,15 +9,21 @@ function capturarHora(campo) {
   const hora = agora.getHours().toString().padStart(2, '0');
   const minutos = agora.getMinutes().toString().padStart(2, '0');
 
-  document.getElementById(campo).value = `${hora}:${minutos}`;
+  const input = document.getElementById(campo);
+  if (!input) {
+    alert("Campo de hora não encontrado: " + campo);
+    return;
+  }
+
+  input.value = `${hora}:${minutos}`;
 
   if (campo === 'horaInicio') {
     horaInicioReal = new Date();
-  } else {
+  } else if (campo === 'horaFim') {
     horaFimReal = new Date();
   }
 
-  calcular(); // atualiza horas e valor da hora na hora
+  calcular();
 }
 
 function addAbastecimento() {
@@ -114,5 +120,6 @@ function salvarDia() {
   localStorage.setItem('controleDiario', JSON.stringify(dados));
   alert("Dia salvo com sucesso!");
 }
+
 
 

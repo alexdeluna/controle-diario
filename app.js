@@ -230,6 +230,27 @@ function formatarData(dataISO) {
   const [y, m, d] = dataISO.split('-');
   return `${d}/${m}/${y}`;
 }
+function limparFormulario() {
+  document.querySelectorAll('input').forEach(input => {
+    if (!input.classList.contains('readonly')) {
+      input.value = '';
+    }
+  });
+
+  document.getElementById('kmPercorrido').value = '';
+  document.getElementById('horasTrabalhadas').value = '';
+  document.getElementById('valorHora').value = '';
+  document.getElementById('lucro').value = '';
+
+  totalAbastecido = 0;
+  totalCusto = 0;
+  horaInicioReal = null;
+  horaFimReal = null;
+
+  document.getElementById('totalAbastecido').value = '0.00';
+  document.getElementById('totalCusto').value = '0.00';
+}
+
 
 
 

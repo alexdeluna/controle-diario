@@ -143,13 +143,18 @@ button {
   <strong>Lucro do Dia</strong>
   <input id="lucro" class="readonly" readonly>
 </div>
-</div>
 
+</div>
 <button onclick="salvarDia()">Salvar Dia</button>
 <div class="secao">
   <h3>Histórico Diário</h3>
   <div id="listaHistorico"></div>
 </div>
+
+  <button onclick="apagarRegistroAtual()" style="margin-top:8px;background:#f44336;color:#fff;">
+  🗑 Apagar registro atual
+</button>
+
   
 </div>
 
@@ -168,6 +173,7 @@ if ('serviceWorker' in navigator) {
 
 </body>
 </html>
+
 
 
 

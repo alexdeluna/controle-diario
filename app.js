@@ -1,3 +1,7 @@
+window.onerror = function (msg, url, line) {
+  alert("Erro JS: " + msg + " (linha " + line + ")");
+};
+
 á a função limparformula´riolet totalAbastecido = 0;
 let totalCusto = 0;
 let horaInicioReal = null;
@@ -340,5 +344,6 @@ function apagarRegistroAtual() {
 
   alert("Registro atual apagado.");
 }
+
 
 

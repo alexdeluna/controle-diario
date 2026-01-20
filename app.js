@@ -130,8 +130,6 @@ function normalizarHora(valor) {
   return '';
 }
 
-
-
 function salvarDia() {
   const hInicio = document.getElementById('horaInicio').value;
   const hFim = document.getElementById('horaFim').value;
@@ -141,44 +139,60 @@ function salvarDia() {
     return;
   }
 
-  const hoje = new Date();
-  const dataBase = hoje.toISOString().split('T')[0];
-
-  // Usa hora capturada OU cria a partir da digitada
-  let inicio = horaInicioReal ?? new Date(`${dataBase}T${hInicio}`);
-  let fim = horaFimReal ?? new Date(`${dataBase}T${hFim}`);
-
-  // Trata virada após meia-noite
-  if (fim < inicio) {
-    fim.setDate(fim.getDate() + 1);
-  }
+  const dataBase = new Date().toISOString().split('T')[0];
 
   let dados = JSON.parse(localStorage.getItem('controleDiario')) || {};
 
-  dados[dataBase] = {
-    const horasTrabalhadas = Number(document.getElementById('horasTrabalhadas').value || 0);
-const valorHora = Number(document.getElementById('valorHora').value || 0);
-const kmPercorrido = Number(document.getElementById('kmPercorrido').value || 0);
+  // Cria o dia se não existir
+  if (!dados[dataBase]) {
+    dados[dataBase] = {
+      totalDia: {
+        apurado: 0,
+        totalAbastecido: 0,
+        totalCusto: 0,
+        lucro: 0
+      },
+      saidas: []
+    };
+  }
 
-dados[dataBase] = {
-  kmPercorrido,
-  horasTrabalhadas,
-  valorHora,
-  apurado: Number(document.getElementById('apurado').value || 0),
-  totalAbastecido,
-  totalCusto,
-  custoTotal: totalAbastecido + totalCusto,
-  lucro: Number(document.getElementById('lucro').value || 0)
-};
+  // Dados da saída
+  const kmPercorrido = Number(document.getElementById('kmPercorrido').value || 0);
+  const horasTrabalhadas = Number(document.getElementById('horasTrabalhadas').value || 0);
+  const valorHora = Number(document.getElementById('valorHora').value || 0);
+  const apurado = Number(document.getElementById('apurado').value || 0);
+  const lucro = Number(document.getElementById('lucro').value || 0);
 
+  const novaSaida = {
+    id: dados[dataBase].saidas.length + 1,
+    kmPercorrido,
+    horasTrabalhadas,
+    valorHora,
+    apurado,
+    totalAbastecido,
+    totalCusto,
+    custoTotal: totalAbastecido + totalCusto,
+    lucro
+  };
+
+  // Salva saída
+  dados[dataBase].saidas.push(novaSaida);
+
+  // Atualiza total do dia
+  dados[dataBase].totalDia.apurado += apurado;
+  dados[dataBase].totalDia.totalAbastecido += totalAbastecido;
+  dados[dataBase].totalDia.totalCusto += totalCusto;
+  dados[dataBase].totalDia.lucro += lucro;
 
   localStorage.setItem('controleDiario', JSON.stringify(dados));
- alert("Dia salvo com sucesso!");
-localStorage.removeItem('rascunhoDia');
-limparFormulario();
-carregarHistorico();
-  
+
+  alert(`Saída ${novaSaida.id} salva com sucesso!`);
+
+  localStorage.removeItem('rascunhoDia');
+  limparFormulario();
+  carregarHistorico();
 }
+
 window.onload = function () {
   const rascunho = JSON.parse(localStorage.getItem('rascunhoDia'));
   if (!rascunho) return;
@@ -265,6 +279,7 @@ function limparFormulario() {
   document.getElementById('totalAbastecido').value = '0.00';
   document.getElementById('totalCusto').value = '0.00';
 }
+
 
 
 

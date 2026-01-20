@@ -1,6 +1,7 @@
 let totalAbastecido = 0;
-let totalCustos = 0;
-let horaInicioReal, horaFimReal;
+let totalCusto = 0;
+let horaInicioReal = null;
+let horaFimReal = null;
 
 function capturarHora(tipo) {
   const agora = new Date();
@@ -16,65 +17,64 @@ function capturarHora(tipo) {
 }
 
 function addAbastecimento() {
-  totalAbastecido += Number(document.getElementById('abastecimento').value || 0);
+  const v = Number(document.getElementById('abastecimento').value || 0);
+  totalAbastecido += v;
+  document.getElementById('totalAbastecido').value = totalAbastecido.toFixed(2);
   document.getElementById('abastecimento').value = '';
+  calcular();
 }
 
 function addCusto() {
-  totalCustos += Number(document.getElementById('custo').value || 0);
+  const v = Number(document.getElementById('custo').value || 0);
+  totalCusto += v;
+  document.getElementById('totalCusto').value = totalCusto.toFixed(2);
   document.getElementById('custo').value = '';
+  calcular();
+}
+
+function calcular() {
+  const kmI = Number(document.getElementById('kmInicial').value || 0);
+  const kmF = Number(document.getElementById('kmFinal').value || 0);
+  if (kmF > kmI) {
+    document.getElementById('kmPercorrido').value = kmF - kmI;
+  }
+
+  let horas = 0;
+  if (horaInicioReal && horaFimReal) {
+    horas = (horaFimReal - horaInicioReal) / 3600000;
+    if (horas < 0) horas += 24;
+    document.getElementById('horasTrabalhadas').value = horas.toFixed(2);
+  }
+
+  const apurado = Number(document.getElementById('apurado').value || 0);
+  if (horas > 0) {
+    document.getElementById('valorHora').value = (apurado / horas).toFixed(2);
+  }
+
+  const lucro = apurado - totalAbastecido - totalCusto;
+  document.getElementById('lucro').value = lucro.toFixed(2);
 }
 
 function salvarDia() {
-  const hoje = horaInicioReal.toISOString().split('T')[0];
+  if (!horaInicioReal || !horaFimReal) {
+    alert("Capture a hora inicial e final.");
+    return;
+  }
 
+  const dataBase = horaInicioReal.toISOString().split('T')[0];
   let dados = JSON.parse(localStorage.getItem('controleDiario')) || {};
 
-  const apurado = Number(document.getElementById('apurado').value);
-
-  dados[hoje] = {
+  dados[dataBase] = {
+    kmInicial: Number(document.getElementById('kmInicial').value),
+    kmFinal: Number(document.getElementById('kmFinal').value),
     horaInicio: horaInicioReal,
     horaFim: horaFimReal,
-    apurado,
+    apurado: Number(document.getElementById('apurado').value),
     totalAbastecido,
-    totalCustos,
-    lucro: apurado - totalAbastecido - totalCustos
+    totalCusto,
+    lucro: Number(document.getElementById('lucro').value)
   };
 
   localStorage.setItem('controleDiario', JSON.stringify(dados));
-  alert('Dia salvo com sucesso!');
-}
-
-function calcularMeta() {
-  const meta = Number(document.getElementById('metaMensal').value);
-  const diaria = Number(document.getElementById('metaDiaria').value);
-  const hoje = new Date();
-  const mesAtual = hoje.toISOString().substring(0,7);
-
-  const dados = JSON.parse(localStorage.getItem('controleDiario')) || {};
-  let lucroMes = 0;
-  let diasUteis = 0;
-
-  for (let d in dados) {
-    if (d.startsWith(mesAtual)) lucroMes += dados[d].lucro;
-  }
-
-  let data = new Date();
-  while (data.getMonth() === hoje.getMonth()) {
-    if (data.getDay() !== 0 && data.getDay() !== 6) diasUteis++;
-    data.setDate(data.getDate() + 1);
-  }
-
-  const falta = meta - lucroMes;
-  const mediaNecessaria = falta / diasUteis;
-
-  let aviso = mediaNecessaria > diaria
-    ? "⚠️ Será necessário trabalhar finais de semana ou feriados."
-    : "✅ Meta atingível apenas em dias úteis.";
-
-  document.getElementById('resultadoMeta').innerText =
-    `Lucro atual: R$ ${lucroMes}
-Falta: R$ ${falta}
-Média necessária: R$ ${mediaNecessaria.toFixed(2)}
-${aviso}`;
+  alert("Dia salvo com sucesso!");
 }

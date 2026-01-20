@@ -167,9 +167,10 @@ function salvarDia() {
   };
 
   localStorage.setItem('controleDiario', JSON.stringify(dados));
-  alert("Dia salvo com sucesso!");
-  localStorage.removeItem('rascunhoDia');
-  carregarHistorico();
+ alert("Dia salvo com sucesso!");
+localStorage.removeItem('rascunhoDia');
+limparFormulario();
+carregarHistorico();
   
 }
 window.onload = function () {
@@ -250,6 +251,7 @@ function limparFormulario() {
   document.getElementById('totalAbastecido').value = '0.00';
   document.getElementById('totalCusto').value = '0.00';
 }
+
 
 
 

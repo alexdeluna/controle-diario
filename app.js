@@ -3,17 +3,21 @@ let totalCusto = 0;
 let horaInicioReal = null;
 let horaFimReal = null;
 
-function capturarHora(tipo) {
+function capturarHora(campo) {
   const agora = new Date();
-  const hora = agora.toISOString().substring(11,16);
 
-  if (tipo === 'inicio') {
-    document.getElementById('horaInicio').value = hora;
-    horaInicioReal = agora;
+  const hora = agora.getHours().toString().padStart(2, '0');
+  const minutos = agora.getMinutes().toString().padStart(2, '0');
+
+  document.getElementById(campo).value = `${hora}:${minutos}`;
+
+  if (campo === 'horaInicio') {
+    horaInicioReal = new Date();
   } else {
-    document.getElementById('horaFim').value = hora;
-    horaFimReal = agora;
+    horaFimReal = new Date();
   }
+
+  calcular(); // atualiza horas e valor da hora na hora
 }
 
 function addAbastecimento() {
@@ -110,4 +114,5 @@ function salvarDia() {
   localStorage.setItem('controleDiario', JSON.stringify(dados));
   alert("Dia salvo com sucesso!");
 }
+
 

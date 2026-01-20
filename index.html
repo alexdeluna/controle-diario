@@ -5,38 +5,122 @@
 <title>Controle Diário</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="manifest" href="manifest.json">
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f2f2f2;
+}
+.app {
+  width: 360px;
+  background: #fff;
+  margin: 10px auto;
+  padding: 15px;
+  border: 1px solid #000;
+}
+h2 {
+  text-align: center;
+}
+.linha {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+input {
+  width: 120px;
+}
+.readonly {
+  background: #eee;
+}
+.secao {
+  border-top: 1px solid #000;
+  margin-top: 10px;
+  padding-top: 10px;
+}
+button {
+  cursor: pointer;
+}
+</style>
 </head>
 
 <body>
+
+<div class="app">
 <h2>Controle Diário</h2>
 
-<h3>Horas</h3>
-Hora Inicial:
-<input type="time" id="horaInicio">
-<button onclick="capturarHora('inicio')">Agora</button><br><br>
+<div class="linha">
+  <label>KM Inicial</label>
+  <input id="kmInicial" type="number">
+  <label>KM Final</label>
+  <input id="kmFinal" type="number" oninput="calcular()">
+</div>
 
-Hora Final:
-<input type="time" id="horaFim">
-<button onclick="capturarHora('fim')">Agora</button>
+<div class="linha">
+  <label>Hora Inicial</label>
+  <input id="horaInicio" type="time">
+  <button onclick="capturarHora('inicio')">⏱</button>
 
-<h3>Financeiro</h3>
-Apurado: <input type="number" id="apurado"><br><br>
-Abastecimento: <input type="number" id="abastecimento">
-<button onclick="addAbastecimento()">+</button><br><br>
-Custos: <input type="number" id="custo">
-<button onclick="addCusto()">+</button><br><br>
+  <label>Hora Final</label>
+  <input id="horaFim" type="time">
+  <button onclick="capturarHora('fim')">⏱</button>
+</div>
+
+<div class="secao">
+<div class="linha">
+  <label>Abastecimento</label>
+  <input id="abastecimento" type="number">
+  <button onclick="addAbastecimento()">+</button>
+</div>
+
+<div class="linha">
+  <label>Total Abastecido</label>
+  <input id="totalAbastecido" class="readonly" readonly>
+</div>
+
+<div class="linha">
+  <label>Custo Diário</label>
+  <input id="custo" type="number">
+  <button onclick="addCusto()">+</button>
+</div>
+
+<div class="linha">
+  <label>Total Custo Diário</label>
+  <input id="totalCusto" class="readonly" readonly>
+</div>
+
+<div class="linha">
+  <label>Apurado (Entrada)</label>
+  <input id="apurado" type="number" oninput="calcular()">
+</div>
+</div>
+
+<div class="secao">
+<div class="linha">
+  <label>KM Percorrido</label>
+  <input id="kmPercorrido" class="readonly" readonly>
+</div>
+
+<div class="linha">
+  <label>Horas Trabalhadas</label>
+  <input id="horasTrabalhadas" class="readonly" readonly>
+</div>
+
+<div class="linha">
+  <label>Valor da Hora</label>
+  <input id="valorHora" class="readonly" readonly>
+</div>
+</div>
+
+<div class="secao">
+<div class="linha">
+  <strong>Lucro do Dia</strong>
+  <input id="lucro" class="readonly" readonly>
+</div>
+</div>
 
 <button onclick="salvarDia()">Salvar Dia</button>
 
-<hr>
-
-<h2>Meta Mensal</h2>
-Meta Mensal: <input type="number" id="metaMensal"><br><br>
-Meta Diária: <input type="number" id="metaDiaria"><br><br>
-
-<button onclick="calcularMeta()">Calcular Meta</button>
-
-<p id="resultadoMeta"></p>
+</div>
 
 <script src="app.js"></script>
 <script>
@@ -44,5 +128,6 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
 }
 </script>
+
 </body>
 </html>

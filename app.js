@@ -59,16 +59,33 @@ function calcular() {
 /* ================= CUSTOS ================= */
 
 function addAbastecimento() {
-  totalAbastecido += Number(abastecimento.value || 0);
-  totalAbastecidoInput.value = totalAbastecido.toFixed(2);
-  abastecimento.value = '';
+  const campo = document.getElementById('abastecimento');
+  const totalInput = document.getElementById('totalAbastecido');
+
+  const valor = Number(campo.value);
+
+  if (!valor || valor <= 0) return;
+
+  totalAbastecido += valor;
+  totalInput.value = totalAbastecido.toFixed(2);
+
+  campo.value = '';
   calcular();
 }
 
 function addCusto() {
-  totalCusto += Number(custo.value || 0);
-  totalCustoInput.value = totalCusto.toFixed(2);
-  custo.value = '';
+  const campo = document.getElementById('custo');
+  const valor = parseFloat(campo.value);
+
+  if (!valor || valor <= 0) return;
+
+  totalCusto += valor;
+
+  document.getElementById('totalCusto').value =
+    totalCusto.toFixed(2);
+
+  campo.value = ''; // limpa o campo
+
   calcular();
 }
 
@@ -166,3 +183,4 @@ window.onload = () => {
   calcular();
   carregarHistorico();
 };
+

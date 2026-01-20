@@ -12,21 +12,6 @@ body {
   background: #f2f2f2;
 }
 
-#listaHistorico {
-  max-height: 220px;
-  overflow-y: auto;
-  font-size: 13px;
-}
-
-.dia {
-  border-bottom: 1px solid #ccc;
-  padding: 6px 0;
-}
-
-.dia strong {
-  display: block;
-}
-
 .app {
   width: 360px;
   background: #fff;
@@ -42,6 +27,7 @@ h2 {
 .linha {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 6px;
 }
 
@@ -63,6 +49,16 @@ button {
   cursor: pointer;
 }
 
+#listaHistorico {
+  max-height: 220px;
+  overflow-y: auto;
+  font-size: 13px;
+}
+
+.dia {
+  border-bottom: 1px solid #ccc;
+  padding: 6px 0;
+}
 </style>
 </head>
 
@@ -71,94 +67,112 @@ button {
 <div class="app">
 <h2>Controle Diário</h2>
 
+<!-- KM -->
 <div class="linha">
   <label>KM Inicial</label>
   <input id="kmInicial" type="number" oninput="calcular()">
+
   <label>KM Final</label>
   <input id="kmFinal" type="number" oninput="calcular()">
 </div>
 
+<!-- HORAS -->
 <div class="linha">
   <label>Hora Inicial</label>
-  <input id="horaInicio" type="text" inputmode="numeric" placeholder="HHMM"
-       style="width:70px"
-       oninput="this.value = normalizarHora(this.value); calcular();">
+  <input id="horaInicio"
+         type="text"
+         inputmode="numeric"
+         placeholder="HHMM"
+         style="width:70px"
+         onblur="this.value = normalizarHora(this.value); calcular();">
   <button onclick="capturarHora('horaInicio')">⏱</button>
 
   <label>Hora Final</label>
- <input id="horaFim" type="text" inputmode="numeric" placeholder="HHMM"
-       style="width:70px"
-       oninput="this.value = normalizarHora(this.value); calcular();">
+  <input id="horaFim"
+         type="text"
+         inputmode="numeric"
+         placeholder="HHMM"
+         style="width:70px"
+         onblur="this.value = normalizarHora(this.value); calcular();">
   <button onclick="capturarHora('horaFim')">⏱</button>
 </div>
 
+<!-- CUSTOS -->
 <div class="secao">
-<div class="linha">
-  <label>Abastecimento</label>
-  <input id="abastecimento" type="number">
-  <button onclick="addAbastecimento()">+</button>
+
+  <div class="linha">
+    <label>Abastecimento</label>
+    <input id="abastecimento" type="number">
+    <button onclick="addAbastecimento()">+</button>
+  </div>
+
+  <div class="linha">
+    <label>Total Abastecido</label>
+    <input id="totalAbastecido" class="readonly" readonly>
+  </div>
+
+  <div class="linha">
+    <label>Outros Custos</label>
+    <input id="custo" type="number">
+    <button onclick="addCusto()">+</button>
+  </div>
+
+  <div class="linha">
+    <label>Total Custos</label>
+    <input id="totalCusto" class="readonly" readonly>
+  </div>
+
+  <div class="linha">
+    <label>Apurado</label>
+    <input id="apurado" type="number" oninput="calcular()">
+  </div>
+
 </div>
 
-<div class="linha">
-  <label>Total Abastecido</label>
-  <input id="totalAbastecido" class="readonly" readonly>
-</div>
+<!-- RESULTADOS -->
+<div class="secao">
 
-<div class="linha">
-  <label>Custo Diário</label>
-  <input id="custo" type="number">
-  <button onclick="addCusto()">+</button>
-</div>
+  <div class="linha">
+    <label>KM Percorrido</label>
+    <input id="kmPercorrido" class="readonly" readonly>
+  </div>
 
-<div class="linha">
-  <label>Total Custo Diário</label>
-  <input id="totalCusto" class="readonly" readonly>
-</div>
+  <div class="linha">
+    <label>Horas Trabalhadas</label>
+    <input id="horasTrabalhadas" class="readonly" readonly>
+  </div>
 
-<div class="linha">
-  <label>Apurado (Entrada)</label>
-  <input id="apurado" type="number" oninput="calcular()">
-</div>
+  <div class="linha">
+    <label>Valor da Hora</label>
+    <input id="valorHora" class="readonly" readonly>
+  </div>
+
 </div>
 
 <div class="secao">
-<div class="linha">
-  <label>KM Percorrido</label>
-  <input id="kmPercorrido" class="readonly" readonly>
+  <div class="linha">
+    <strong>Lucro do Dia</strong>
+    <input id="lucro" class="readonly" readonly>
+  </div>
 </div>
 
-<div class="linha">
-  <label>Horas Trabalhadas</label>
-  <input id="horasTrabalhadas" class="readonly" readonly>
-</div>
+<!-- AÇÕES -->
+<button onclick="salvarDia()">💾 Salvar Dia</button>
 
-<div class="linha">
-  <label>Valor da Hora</label>
-  <input id="valorHora" class="readonly" readonly>
-</div>
-</div>
+<button onclick="apagarRegistroAtual()"
+        style="margin-top:8px;background:#f44336;color:#fff;">
+  🗑 Apagar registro atual
+</button>
 
-<div class="secao">
-<div class="linha">
-  <strong>Lucro do Dia</strong>
-  <input id="lucro" class="readonly" readonly>
-</div>
-
-</div>
-<button onclick="salvarDia()">Salvar Dia</button>
+<!-- HISTÓRICO -->
 <div class="secao">
   <h3>Histórico Diário</h3>
   <div id="listaHistorico"></div>
 </div>
 
-  <button onclick="apagarRegistroAtual()" style="margin-top:8px;background:#f44336;color:#fff;">
-  🗑 Apagar registro atual
-</button>
-
-  
 </div>
 
- <script src="app.js"></script>
+<script src="app.js"></script>
 <script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
@@ -167,15 +181,3 @@ if ('serviceWorker' in navigator) {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-

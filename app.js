@@ -236,20 +236,33 @@ function carregarHistorico() {
     const div = document.createElement('div');
     div.className = 'dia';
 
-    div.innerHTML = `
-      <strong>${formatarData(data)}</strong>
+    let html = `<strong>${formatarData(data)}</strong><br><br>`;
 
-      🚗 KM percorrido: <strong>${d.kmPercorrido} km</strong><br>
-      ⏱ Horas trabalhadas: ${d.horasTrabalhadas.toFixed(2)} h<br>
-      💰 Valor da hora: R$ ${d.valorHora.toFixed(2)}<br>
+d.saidas.forEach(saida => {
+  html += `
+    🔹 <strong>Saída ${saida.id}</strong><br>
+    🚗 KM percorrido: ${saida.kmPercorrido} km<br>
+    ⏱ Horas trabalhadas: ${saida.horasTrabalhadas.toFixed(2)} h<br>
+    💰 Valor da hora: R$ ${saida.valorHora.toFixed(2)}<br>
 
-      ⛽ Combustível: R$ ${d.totalAbastecido.toFixed(2)}<br>
-      📦 Outros custos: R$ ${d.totalCusto.toFixed(2)}<br>
-      🧾 Custo total: <strong>R$ ${d.custoTotal.toFixed(2)}</strong><br>
+    ⛽ Combustível: R$ ${saida.totalAbastecido.toFixed(2)}<br>
+    📦 Outros custos: R$ ${saida.totalCusto.toFixed(2)}<br>
+    🧾 Custo total: R$ ${saida.custoTotal.toFixed(2)}<br>
 
-      💵 Apurado: R$ ${d.apurado.toFixed(2)}<br>
-      🟢 Lucro do dia: <strong>R$ ${d.lucro.toFixed(2)}</strong>
-    `;
+    💵 Apurado: R$ ${saida.apurado.toFixed(2)}<br>
+    🟢 Lucro: <strong>R$ ${saida.lucro.toFixed(2)}</strong>
+    <hr>
+  `;
+});
+
+html += `
+  <strong>📊 TOTAL DO DIA</strong><br>
+  💵 Apurado: R$ ${d.totalDia.apurado.toFixed(2)}<br>
+  🧾 Custos: R$ ${(d.totalDia.totalAbastecido + d.totalDia.totalCusto).toFixed(2)}<br>
+  🟢 Lucro do dia: <strong>R$ ${d.totalDia.lucro.toFixed(2)}</strong>
+`;
+
+div.innerHTML = html;
 
     lista.appendChild(div);
   });
@@ -279,6 +292,7 @@ function limparFormulario() {
   document.getElementById('totalAbastecido').value = '0.00';
   document.getElementById('totalCusto').value = '0.00';
 }
+
 
 
 

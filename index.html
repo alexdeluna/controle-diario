@@ -10,6 +10,22 @@
 body {
   font-family: Arial, sans-serif;
   background: #f2f2f2;
+
+  #listaHistorico {
+  max-height: 220px;
+  overflow-y: auto;
+  font-size: 13px;
+}
+
+.dia {
+  border-bottom: 1px solid #ccc;
+  padding: 6px 0;
+}
+
+.dia strong {
+  display: block;
+}
+
 }
 .app {
   width: 360px;
@@ -126,6 +142,12 @@ button {
 
 </div>
 
+  <div class="secao">
+  <h3>Histórico Diário</h3>
+  <div id="listaHistorico"></div>
+</div>
+
+
 <script src="app.js"></script>
 <script>
 if ('serviceWorker' in navigator) {
@@ -135,6 +157,7 @@ if ('serviceWorker' in navigator) {
 
 </body>
 </html>
+
 
 
 

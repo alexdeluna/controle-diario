@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Controle Diário</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="manifest" href="manifest.json">
+</head>
+
+<body>
+<h2>Controle Diário</h2>
+
+<h3>Horas</h3>
+Hora Inicial:
+<input type="time" id="horaInicio">
+<button onclick="capturarHora('inicio')">Agora</button><br><br>
+
+Hora Final:
+<input type="time" id="horaFim">
+<button onclick="capturarHora('fim')">Agora</button>
+
+<h3>Financeiro</h3>
+Apurado: <input type="number" id="apurado"><br><br>
+Abastecimento: <input type="number" id="abastecimento">
+<button onclick="addAbastecimento()">+</button><br><br>
+Custos: <input type="number" id="custo">
+<button onclick="addCusto()">+</button><br><br>
+
+<button onclick="salvarDia()">Salvar Dia</button>
+
+<hr>
+
+<h2>Meta Mensal</h2>
+Meta Mensal: <input type="number" id="metaMensal"><br><br>
+Meta Diária: <input type="number" id="metaDiaria"><br><br>
+
+<button onclick="calcularMeta()">Calcular Meta</button>
+
+<p id="resultadoMeta"></p>
+
+<script src="app.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
+</script>
+</body>
+</html>

@@ -199,6 +199,29 @@ const lucro = getValorSeguro('lucro');
   carregarHistorico();
 }
 
+function apagarRegistroAtual() {
+  const confirmar = confirm(
+    "Isso vai apagar o registro em andamento.\nOs dias já salvos NÃO serão apagados.\n\nDeseja continuar?"
+  );
+
+  if (!confirmar) return;
+
+  // Remove rascunho
+  localStorage.removeItem('rascunhoDia');
+
+  // Limpa memória
+  totalAbastecido = 0;
+  totalCusto = 0;
+  horaInicioReal = null;
+  horaFimReal = null;
+
+  // Limpa tela
+  limparFormulario();
+
+  alert("Registro atual apagado com sucesso!");
+}
+
+
 window.onload = function () {
   const rascunho = JSON.parse(localStorage.getItem('rascunhoDia'));
   if (!rascunho) return;
@@ -309,3 +332,4 @@ function limparFormulario() {
   // 🔥 ESSENCIAL: remove qualquer rascunho ativo
   localStorage.removeItem('rascunhoDia');
 }
+

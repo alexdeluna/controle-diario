@@ -127,39 +127,49 @@ function salvarDia() {
 
   if (!dados[data]) dados[data] = [];
 
+  // ⏱ horas no formato visual
+  const horasTexto = horasTrabalhadas.value || '00:00';
+
+  const [h, m] = horasTexto.split(':').map(Number);
+  const minutosTrabalhados = (h * 60) + m;
+
   dados[data].push({
-    const horasTexto = horasTrabalhadas.value; // ex: "00:58"
+    km: Number(kmPercorrido.value || 0),
 
-const [h, m] = horasTexto.split(':').map(Number);
-const minutosTrabalhados = (h * 60) + m;
+    // visual
+    horasTexto: horasTexto,
 
-dados[data].push({
-  km: Number(kmPercorrido.value),
+    // numérico (para cálculos futuros)
+    minutos: minutosTrabalhados,
 
-  // ⏱ profissional
-  horasTexto: horasTexto,
-
-  // 🔢 para cálculos futuros
-  minutos: minutosTrabalhados,
-
-  valorHora: Number(valorHora.value),
-  apurado: Number(apurado.value),
-  custos: totalAbastecido + totalCusto,
-  lucro: Number(lucro.value)
-});
+    valorHora: Number(valorHora.value || 0),
+    apurado: Number(apurado.value || 0),
+    custos: totalAbastecido + totalCusto,
+    lucro: Number(lucro.value || 0)
+  });
 
   localStorage.setItem('controleDiario', JSON.stringify(dados));
+
   limparFormulario();
   carregarHistorico();
+
   alert("Dia salvo com sucesso!");
 }
 
 /* ================= LIMPAR ================= */
 
 function limparFormulario() {
-  document.querySelectorAll('input').forEach(i => i.value = '');
+  document.querySelectorAll('input').forEach(i => {
+    if (!i.classList.contains('readonly')) i.value = '';
+  });
+
+  totalAbastecido = 0;
+  totalCusto = 0;
+  horaInicioReal = null;
+  horaFimReal = null;
+
   totalAbastecido = totalCusto = 0;
-  horaInicioReal = horaFimReal = null;
+
   localStorage.removeItem('rascunhoDia');
 }
 
@@ -217,6 +227,7 @@ window.onload = () => {
   calcular();
   carregarHistorico();
 };
+
 
 
 

@@ -101,6 +101,14 @@ function addCusto() {
 /* ================= RASCUNHO ================= */
 
 function salvarRascunho() {
+  if (
+    !kmInicial.value &&
+    !kmFinal.value &&
+    !horaInicio.value &&
+    !horaFim.value &&
+    !apurado.value
+  ) return;
+
   localStorage.setItem('rascunhoDia', JSON.stringify({
     kmInicial: kmInicial.value,
     kmFinal: kmFinal.value,
@@ -113,6 +121,7 @@ function salvarRascunho() {
     horaFimReal
   }));
 }
+
 
 /* ================= SALVAR DIA ================= */
 
@@ -149,10 +158,10 @@ function salvarDia() {
   });
 
   localStorage.setItem('controleDiario', JSON.stringify(dados));
-
+  localStorage.removeItem('rascunhoDia');
+  
   limparFormulario();
   carregarHistorico();
-
   alert("Dia salvo com sucesso!");
 }
 
@@ -160,7 +169,7 @@ function salvarDia() {
 
 function limparFormulario() {
   document.querySelectorAll('input').forEach(i => {
-    if (!i.classList.contains('readonly')) i.value = '';
+    i.value = '';
   });
 
   totalAbastecido = 0;
@@ -168,10 +177,9 @@ function limparFormulario() {
   horaInicioReal = null;
   horaFimReal = null;
 
-  totalAbastecido = totalCusto = 0;
-
   localStorage.removeItem('rascunhoDia');
 }
+
 
 /* ================= HISTÓRICO ================= */
 
@@ -227,6 +235,7 @@ window.onload = () => {
   calcular();
   carregarHistorico();
 };
+
 
 
 
